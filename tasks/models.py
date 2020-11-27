@@ -11,20 +11,16 @@ class Project(models.Model):
 
 
 class Task(models.Model):
-    
-    class Statuses (models.TextChoices):
-        COMPLETED = 'CMP', _('Completed')
-        ONGOING = 'ONG', _('Ongoing')
-
-    status = models.CharField(
-        max_length=3,
-        choices=Statuses.choices,
-        default=Statuses.ONGOING,
-    )
+    class Priority(models.IntegerChoices):
+        LOW = 1
+        STANDARD = 2
+        HIGH = 3
+        CRITICAL = 4
 
     descr = models.CharField(max_length=200)
     project = models.ForeignKey(Project, related_name="tasks", on_delete=CASCADE)
-    priority = models.IntegerField()
+    completed = models.BooleanField(default=False)
+    priority = models.IntegerField(choices=Priority.choices, default=Priority.STANDARD)
     deadline = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     

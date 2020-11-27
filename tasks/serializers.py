@@ -11,13 +11,19 @@ class TaskSerializer(serializers.ModelSerializer):
         fields = ('__all__')
 
     def get_overdued(self, obj):
-        return obj.status == obj.Statuses.ONGOING and timezone.localtime() > obj.deadline
+        return not obj.completed and timezone.localtime() > obj.deadline
 
 
 class ProjectSerializer(serializers.ModelSerializer):
     tasks = TaskSerializer(many=True, read_only=True)
 
+    def create(self, validated_data):
+        p = Project.objects.create(author=self.context['request'].user, **validated_data)
+        return p
+
     class Meta:
         model = Project
         fields = ('id', 'name', 'created_at', 'author', 'tasks')
-
+        extra_kwargs = {
+            'author': {'read_only': True},
+        }

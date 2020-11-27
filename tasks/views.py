@@ -11,10 +11,13 @@ class ProjectViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return self.request.user.projects.all()
+    
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = [IsAuthenticated]
-    
+
     def get_queryset(self):
         return Task.objects.filter(project__author_id=self.request.user)

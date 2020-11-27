@@ -26,13 +26,22 @@ module.exports = {
         use: {
           loader: "babel-loader"
         }
-      }, // to transform JSX into JS
+      },     
+      {
+        test: /\.css$/,
+        use: ["style-loader", "css-loader"],
+      },
     ],
   },
 
   resolve: {
     modules: ['node_modules'],
     extensions: ['.js', '.jsx']
+  },
+
+  watchOptions: {
+    aggregateTimeout: 1000,
+    ignored: /node_modules/
   },
 }
   

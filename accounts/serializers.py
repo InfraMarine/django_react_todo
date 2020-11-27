@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate
-
+from django.contrib.auth.password_validation import validate_password
 
 class UserSerializer(serializers.ModelSerializer):
 
@@ -17,6 +17,27 @@ class UserSerializer(serializers.ModelSerializer):
         user.save()
         return user
 
+    def validate(self, data):
+        """
+        Validates user data.
+        """
+        username = data.get('username', None)
+        password = data.get('password', None)
+
+        if username is None:
+            raise serializers.ValidationError(
+                'A username is required.'
+            )
+
+        if password is None:
+            raise serializers.ValidationError(
+                'A password is required.'
+            )
+
+        validate_password(password)
+
+        return {'username':username, 'password':password}
+
 
 class LoginSerializer(serializers.ModelSerializer):
 
@@ -31,7 +52,7 @@ class LoginSerializer(serializers.ModelSerializer):
     
     def validate(self, data):
         """
-        Validates user data.
+        Validates login data.
         """
         username = data.get('username', None)
         password = data.get('password', None)

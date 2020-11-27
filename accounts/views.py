@@ -8,9 +8,6 @@ from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
-@ensure_csrf_cookie
-def set_csrf_token(request):
-    return JsonResponse({"details": "CSRF cookie set"})
 
 class CheckAuthView(APIView):
     permission_classes = [IsAuthenticated,]
@@ -23,7 +20,7 @@ class RegisterView(generics.CreateAPIView):
     permission_classes = (AllowAny,)
     queryset = User.objects.all()
     serializer_class = UserSerializer
-
+ 
 
 class LoginView(generics.GenericAPIView):
     permission_classes = (AllowAny,)
@@ -32,9 +29,9 @@ class LoginView(generics.GenericAPIView):
     def post(self, request):
         user_serializer = LoginSerializer(data=request.data)
         if not user_serializer.is_valid():
-            return JsonResponse(user_serializer.errors, status=400)
-        username = request.POST['username']
-        password = request.POST['password']
+            return JsonResponse(user_serializer.errors, status=401)
+        username = request.data.get('username', None)
+        password = request.data.get('password', None)
         user = authenticate(username=username, password=password)
         login(request, user)
         return JsonResponse(user_serializer.validated_data, status=200)
