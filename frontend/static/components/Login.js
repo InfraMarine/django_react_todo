@@ -1,10 +1,9 @@
-import React, { useState, useEffect} from "react"
+import React, {useState} from "react"
 import Cookies from "js-cookie"
 
 import AuthContext from "./AuthContext"
 import {loginAPI} from "../actions/Api.js"
-
-const COOKIE_EXP_IN = 7;
+import {Link} from "react-router-dom"
 
 export const Login = () => {
   const Auth = React.useContext(AuthContext)
@@ -17,8 +16,13 @@ export const Login = () => {
       loginAPI({'username':login,'password':pass})
       .then(json => {
         console.log(json);
-        Auth.setAuth(true);
-        Cookies.set("user", login, { expires: COOKIE_EXP_IN });
+        if (json.id) {
+          Auth.setAuth(true);
+          Cookies.set("user", login, { expires: Auth.COOKIE_EXP_IN});
+        }
+        else {
+          setError(JSON.stringify(json));
+        }
       })
       .catch((error) => {
         setError('Error:' + error);
@@ -26,23 +30,32 @@ export const Login = () => {
   }
 
   return (
-      <div>
-          <h1>Welcome to the rice fields...</h1>
+    <div className="container">
+      <form onSubmit={handleSubmit}>
 
-          <form onSubmit={handleSubmit}>
-            <input id='login' type='text'
-              placeholder="username"
-              value={login}
-              onChange={(e)=> setLogin(e.target.value)
-            }/>
-            <input id='pass' type='password'
-              placeholder="password"
-              value={pass} 
-              onChange={(e)=> setPass(e.target.value)
-            }/>
-            <button>Login</button>
-            <span>{error}</span>
-          </form>
+      <h3>Login</h3>
+
+      <div className="form-group">
+          <label>Username</label>
+          <input type="text" className="form-control"
+            placeholder="Enter username"
+            value={login}
+            onChange={(e)=> setLogin(e.target.value)}
+          />
       </div>
+
+      <div className="form-group">
+          <label>Password</label>
+          <input type="password" className="form-control"
+            placeholder="Enter password"
+            value={pass} 
+            onChange={(e)=> setPass(e.target.value)}
+          />
+      </div>
+      <button type="submit" className="btn btn-dark btn-lg btn-block">Sign in</button>
+      </form>
+      <Link to="/signup">Sign Up</Link>
+      {error}
+    </div>
   )
 }

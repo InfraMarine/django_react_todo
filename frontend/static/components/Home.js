@@ -3,7 +3,6 @@ import AuthContext from "./AuthContext"
 import Cookies from "js-cookie"
 import {Navbar,
   Nav,
-  NavDropdown,
   Button
   } from "react-bootstrap"
 
@@ -78,10 +77,14 @@ export const Home = () => {
         <Navbar.Brand>Task manager</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
-          <Navbar.Text className="ml-auto mr-4">
-            {Cookies.get("user")}
-          </Navbar.Text>
-          <Button variant="outline-success" onClick={handleLogout}>Logout</Button>
+          <Nav className="ml-auto">
+            <Navbar.Text className="mr-4">
+              {Cookies.get("user")}
+            </Navbar.Text>
+            <Nav.Link>
+              <Button variant="outline-success" onClick={handleLogout}>Logout</Button>
+            </Nav.Link>
+          </Nav>
         </Navbar.Collapse>
       </Navbar>
 

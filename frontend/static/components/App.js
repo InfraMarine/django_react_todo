@@ -9,10 +9,12 @@ import Cookies from "js-cookie"
 
 import AuthContext from "./AuthContext"
 import {Login} from "./Login"
+import {SignUp} from "./SignUp"
 import {Home} from "./Home"
 
 export default function App () {
-  
+  const COOKIE_EXP_IN = 7;
+
   const [auth, setAuth] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -31,7 +33,7 @@ export default function App () {
 
   return (
     <div className="App">
-      <AuthContext.Provider value={{auth,setAuth}}>
+      <AuthContext.Provider value={{COOKIE_EXP_IN, auth, setAuth}}>
         <Router>
           {!loading && <Routes/>}
         </Router>
@@ -49,6 +51,11 @@ const Routes = () => {
         term={!Auth.auth}
         elsePath="/home"
         component={Login}
+      />
+      <ProtectedRoute path="/signup"
+        term={!Auth.auth}
+        elsePath="/home"
+        component={SignUp}
       />
       <ProtectedRoute path="/home"
         term={Auth.auth}

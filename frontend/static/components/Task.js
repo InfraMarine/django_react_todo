@@ -14,14 +14,14 @@ export const Task = (props) => {
 
   useEffect(()=>{
     const now = new Date();
-    if (!overdued && deadline < now) {
+    if (!completed && deadline < now) {
       setOverdued(true)
     }
-    else if (overdued && deadline > now) {
+    else if (completed || deadline > now) {
       setOverdued(false)
     }
     console.log("overdued: " + overdued)
-  },[deadline])
+  },[deadline, completed])
 
   const handleDescrSave = () => {
     props.onUpdate(props.item.id, {'descr':descr})
@@ -44,40 +44,31 @@ export const Task = (props) => {
   }
 
   return (
-      <Form.Row className="mb-2">
-        <Col xs={1}>
-          <DatePicker selected={deadline} onChange={handleDatePicker}
-            customInput={<DateCustomInput overdued={overdued}/>}
-            showTimeInput
-          />
-        </Col>
-        <Col xs={10} sm={8}>
-          <Form.Control
+      <Form inline className="mb-2">
+        <DatePicker selected={deadline} onChange={handleDatePicker}
+          customInput={<DateCustomInput overdued={overdued}/>}
+          showTimeInput
+        />
+        <Form.Group className="w-75 mx-1">
+          <Form.Control className="w-100"
             plaintext={!editing}
             readOnly={!editing}
             value={descr}
             onChange={(e)=>setDescr(e.target.value)}
           />
-        </Col>
-        <Col>
+        </Form.Group>
+          <Form.Check type="checkbox" size="lg" checked={completed} onChange={handleCheck}/>
+        <Form.Control className="ml-auto mr-2" size="sm" as="select" value={priority} onChange={handleSelect}>
+          <option value={1}>Low</option>
+          <option value={2}>Meh</option>
+          <option value={3}>High</option>
+          <option value={4}>Critical</option>
+        </Form.Control>
           {editing ? <Button size="sm" type="button" onClick={handleDescrSave}>Save</Button>
             :<Button size="sm" type="button" onClick={()=>setEditing(true)}>Edit</Button>
-          }
-        </Col>
-        <Col>
-          <Form.Check type="checkbox" size="lg" checked={completed} onChange={handleCheck}/>
-          
-          <Form.Control size="sm" as="select" value={priority} onChange={handleSelect}>
-            <option value={1}>Low</option>
-            <option value={2}>Meh</option>
-            <option value={3}>High</option>
-            <option value={4}>Critical</option>
-          </Form.Control>    
-        </Col>
-        <Col>
+          }    
           <Button variant="danger" className="ml-2" type="button" size="sm"
             onClick={()=>props.onRemove(props.item.id)}>X</Button>
-        </Col>
-      </Form.Row>
+      </Form>
   )
 }
