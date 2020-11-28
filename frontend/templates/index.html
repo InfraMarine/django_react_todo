@@ -1,4 +1,3 @@
-{% load render_bundle from webpack_loader %}
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,6 +16,7 @@
 <div id="root">
     <!-- React will load here -->
 </div>
-{% render_bundle 'main' %}
+{% load static %}
+<script src="{% static 'bundles/main.js' %}"></script>
 </body>
 </html>

@@ -9,7 +9,7 @@ module.exports = {
 
   output: {
       path: path.resolve('./static/bundles/'),
-      filename: "[name]-[hash].js",
+      filename: "[name].js",
       publicPath: '',
   },
 
