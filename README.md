@@ -1,2 +1,2 @@
 # django_react_todo
-This project uses react served as static in django template
+This project uses react served by webpack-loader in django template
