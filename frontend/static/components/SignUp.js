@@ -3,10 +3,9 @@ import Cookies from "js-cookie"
 
 import AuthContext from "./AuthContext"
 import {loginAPI, registerAPI} from "../actions/Api.js"
-import {Link, useHistory} from "react-router-dom"
+import {Link} from "react-router-dom"
 
 export const SignUp = () => {
-  const history = useHistory();
   const Auth = React.useContext(AuthContext)
   const [login, setLogin] = useState("")
   const [pass1, setPass1] = useState("")

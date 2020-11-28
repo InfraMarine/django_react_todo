@@ -1,5 +1,8 @@
 import React, { useState} from "react";
-import {Form, Col, Button, Card} from "react-bootstrap"
+import Form from "react-bootstrap/Form"
+import Col from "react-bootstrap/Col"
+import Button from "react-bootstrap/Button"
+import Card from "react-bootstrap/Card"
 
 import {Task} from "./Task"
 import {AddTask} from "./AddTask"

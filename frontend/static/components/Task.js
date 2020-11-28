@@ -1,5 +1,6 @@
 import React, {Component, useState, useEffect} from "react";
-import {Form, Col, Button} from "react-bootstrap"
+import Form from "react-bootstrap/Form"
+import Button from "react-bootstrap/Button"
 import DatePicker from "react-datepicker";
 import DateCustomInput from "./DateCustomInput"
 
